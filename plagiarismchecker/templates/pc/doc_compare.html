@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plagiarism Checker | Compare Documents</title>
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@700&display=swap">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'pc/stylesDocCheck.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'plagiarism-check-mainpage' %}">Plagiarism Checker</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'plagiarism-check-mainpage' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'compare' %}">Compare Documents</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="col-md-8 mx-auto text-center">
+      <p>Choose two files to compare or enter contents to compare!</p>
+      <ul class="nav nav-tabs" id="compareTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="text-tab" data-bs-toggle="tab" data-bs-target="#text-input" type="button" role="tab">Text</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="file-tab" data-bs-toggle="tab" data-bs-target="#file-input" type="button" role="tab">File Upload</button>
+        </li>
+      </ul>
+      <div class="tab-content mt-3">
+        <div class="tab-pane fade show active" id="text-input" role="tabpanel">
+          <form id="form1" action="/twofiletest1/" method="POST">
+            {% csrf_token %}
+            <textarea class="form-control" name="q1" required></textarea><br>
+            <textarea class="form-control" name="q2" required></textarea>
+            <button type="submit" class="btn btn-primary mt-3">Compare The Texts</button>
+          </form>
+        </div>
+        <div class="tab-pane fade" id="file-input" role="tabpanel">
+          <form id="form2" action="/twofilecompare1/" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <input class="form-control" type="file" name="docfile1" required>
+            <input class="form-control mt-2" type="file" name="docfile2" required>
+            <button type="submit" class="btn btn-primary mt-3">Compare The Files</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid bg-light py-4 text-center">
+    <h3>Results</h3>
+    <h4 class="text-danger">{{ result }}% Similarity</h4>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
